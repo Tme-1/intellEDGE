@@ -40,46 +40,35 @@ function Login() {
 
   return (
     <div className="min-h-screen w-full flex flex-col md:flex-row">
-      {/* Left slanted section */}
-      <div className="w-full md:w-1/2 relative items-center justify-center overflow-hidden min-h-[200px] md:min-h-0 flex" style={{ backgroundImage: "url('/library-bg.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
-        {/* Overlay for better text readability */}
+      {/* Top image for mobile, left for desktop */}
+      <div className="w-full md:w-1/2 relative items-center justify-center overflow-hidden min-h-[220px] md:min-h-0 flex"
+        style={{ backgroundImage: "url('/library-bg.jpg')", backgroundSize: 'cover', backgroundPosition: 'center', height: 'auto' }}>
         <div className="absolute inset-0" style={{ background: 'rgba(0,0,0,0.3)' }} />
-        {/* Content at 40% from the left */}
         <div className="absolute top-1/2 left-[40%] -translate-y-1/2 z-10 flex flex-col items-start w-[60%] min-w-[220px] max-w-[400px]">
-          {/* Orange vertical line behind the text */}
           <motion.div 
-            className="absolute -left-8 top-1/2 -translate-y-1/2 rotate-[15deg] w-2 h-32 bg-orange-400 z-0"
+            className="absolute -left-8 top-1/2 -translate-y-1/2 rotate-[15deg] w-2 h-20 md:h-32 bg-orange-400 z-0"
             initial={{ opacity: 0, x: -100, scale: 0.8 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ 
-              duration: 1.2,
-              ease: "easeOut"
-            }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
           />
           <motion.h2 
-            className="text-white text-5xl font-bold mb-2 z-10"
+            className="text-white text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold mb-2 z-10 leading-tight"
             initial={{ opacity: 0, x: -200 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ 
-              duration: 1.2,
-              ease: "easeOut"
-            }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
           >
             Welcome<br />back to<br /><span className="text-cyan-300">IntellEDGE</span>
           </motion.h2>
           <motion.div 
-            className="w-12 h-1 bg-cyan-400 mt-6 mb-2"
+            className="w-8 md:w-12 h-1 bg-cyan-400 mt-4 md:mt-6 mb-2"
             initial={{ opacity: 0, x: -100, width: 0 }}
-            animate={{ opacity: 1, x: 0, width: 48 }}
-            transition={{ 
-              duration: 1.2,
-              ease: "easeOut"
-            }}
+            animate={{ opacity: 1, x: 0, width: 32 }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
           />
         </div>
       </div>
       {/* Right form section */}
-      <div className="flex flex-1 items-center justify-center bg-edx-gray min-h-screen w-full">
+      <div className="flex flex-1 items-start md:items-center justify-center bg-edx-gray min-h-screen w-full pt-4 md:pt-0">
         <div className="max-w-[400px] w-full bg-white/80 backdrop-blur-sm p-4 sm:p-8 rounded-2xl shadow-[0_8px_32px_0_rgba(0,97,155,0.15)] border border-white/20 transition-all duration-300 hover:shadow-[0_12px_48px_0_rgba(0,97,155,0.25)]">
           {/* Tab Bar */}
           <div className="flex border-b border-gray-200 mb-8">
@@ -103,12 +92,19 @@ function Login() {
                 name="email"
                 type="email"
                 required
-                className="w-full h-[40px] px-3 border border-gray-300 rounded-xl text-[14px] focus:outline-none focus:border-edx-light-blue transition-all duration-300 peer bg-transparent placeholder-transparent"
+                className="w-full h-[40px] px-3 border border-gray-300 rounded-xl text-[14px] focus:outline-none focus:border-2 focus:border-edx-light-blue transition-all duration-300 peer bg-transparent placeholder-transparent"
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <label htmlFor="email" className="absolute left-3 top-2 text-gray-400 text-[14px] transition-all duration-200 pointer-events-none peer-focus:-top-3 peer-focus:text-xs peer-focus:text-edx-light-blue peer-placeholder-shown:top-2 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-400 peer-focus:font-medium peer-focus:bg-white px-1">
+              <label
+                htmlFor="email"
+                className={`absolute left-3 transition-all duration-200 pointer-events-none px-1
+                  text-gray-400 text-[14px]
+                  top-2
+                  peer-focus:-top-3 peer-focus:text-xs peer-focus:text-edx-light-blue peer-focus:font-medium peer-focus:bg-white
+                  ${email ? '-top-3 text-xs text-edx-light-blue font-medium bg-white' : 'peer-placeholder-shown:top-2 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-400'}`}
+              >
                 Email
               </label>
             </div>
@@ -119,14 +115,28 @@ function Login() {
                 name="password"
                 type={showPassword ? "text" : "password"}
                 required
-                className="w-full h-[40px] px-3 border border-gray-300 rounded-xl text-[14px] focus:outline-none focus:border-edx-light-blue transition-all duration-300 peer bg-transparent placeholder-transparent"
+                className="w-full h-[40px] px-3 border border-gray-300 rounded-xl text-[14px] focus:outline-none focus:border-2 focus:border-edx-light-blue transition-all duration-300 peer bg-transparent placeholder-transparent"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <label htmlFor="password" className="absolute left-3 top-2 text-gray-400 text-[14px] transition-all duration-200 pointer-events-none peer-focus:-top-3 peer-focus:text-xs peer-focus:text-edx-light-blue peer-placeholder-shown:top-2 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-400 peer-focus:font-medium peer-focus:bg-white px-1">
+              <label
+                htmlFor="password"
+                className={`absolute left-3 transition-all duration-200 pointer-events-none px-1
+                  text-gray-400 text-[14px]
+                  top-2
+                  peer-focus:-top-3 peer-focus:text-xs peer-focus:text-edx-light-blue peer-focus:font-medium peer-focus:bg-white
+                  ${password ? '-top-3 text-xs text-edx-light-blue font-medium bg-white' : 'peer-placeholder-shown:top-2 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-400'}`}
+              >
                 Password
               </label>
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none transition-colors duration-300"
+              >
+                {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+              </button>
             </div>
 
             <div className="flex items-center justify-end mt-1">
