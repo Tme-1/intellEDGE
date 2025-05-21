@@ -1,0 +1,26 @@
+[build]
+  command = "npx prisma generate && npm run build"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[build.environment]
+  NEXT_USE_NETLIFY_EDGE = "true"
+  NEXT_TELEMETRY_DISABLED = "1"
+  NODE_VERSION = "18"
+  NEXT_PUBLIC_SUPABASE_URL = ""
+  NEXT_PUBLIC_SUPABASE_ANON_KEY = ""
+  SUPABASE_SERVICE_ROLE_KEY = ""
+  DATABASE_URL = ""
+  NEXT_PUBLIC_VERCEL_URL = ""
+  JWT_SECRET = ""
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["@prisma/client", "@supabase/supabase-js"]

@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  materials Material[]
+  courses   Course[]
+  cgpa      Float      @default(0)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Material {
+  id          String   @id @default(cuid())
+  title       String
+  type        String
+  courseTitle String
+  department  String
+  level       String
+  fileUrl     String
+  uploadDate  DateTime @default(now())
+  uploadedBy  String
+  user        User     @relation(fields: [uploadedBy], references: [id])
+
+  @@index([courseTitle])
+  @@index([department])
+  @@index([level])
+}
+
+model Course {
+  id          String   @id @default(cuid())
+  courseCode  String
+  courseTitle String
+  grade       String
+  creditUnit  Int
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+} 
