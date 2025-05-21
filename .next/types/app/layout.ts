@@ -1,4 +1,4 @@
-// File: C:\Users\Hello\Documents\no-going-back\src\app\layout.tsx
+// File: C:\Users\Hello\Pictures\PWA-no-going-back\src\app\layout.tsx
 import * as entry from '../../../src/app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
