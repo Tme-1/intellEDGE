@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, Suspense } from 'react'
+import { useState, Suspense, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
@@ -17,18 +17,37 @@ function Login() {
   const [loading, setLoading] = useState(false)
   const message = searchParams?.get('message')
 
+  useEffect(() => {
+    // Check for existing session
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session) {
+        router.push('/dashboard')
+      }
+    }
+    checkSession()
+  }, [router])
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError(null)
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
       if (error) throw error
+
+      // Set persistent session
+      if (data.session) {
+        await supabase.auth.setSession({
+          access_token: data.session.access_token,
+          refresh_token: data.session.refresh_token,
+        })
+      }
 
       router.push('/dashboard')
     } catch (error: any) {
@@ -92,8 +111,8 @@ function Login() {
                 name="email"
                 type="email"
                 required
-                className="w-full h-[40px] px-3 border border-gray-300 rounded-xl text-[14px] focus:outline-none focus:border-2 focus:border-edx-light-blue transition-all duration-300 peer bg-transparent placeholder-transparent"
-                placeholder="Email"
+                className="w-full h-[40px] px-3 border border-gray-300 rounded-xl text-[14px] focus:outline-none focus:border-2 focus:border-edx-light-blue transition-all duration-300 peer bg-transparent"
+                placeholder=" "
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -101,9 +120,8 @@ function Login() {
                 htmlFor="email"
                 className={`absolute left-3 transition-all duration-200 pointer-events-none px-1
                   text-gray-400 text-[14px]
-                  top-2
                   peer-focus:-top-3 peer-focus:text-xs peer-focus:text-edx-light-blue peer-focus:font-medium peer-focus:bg-white
-                  ${email ? '-top-3 text-xs text-edx-light-blue font-medium bg-white' : 'peer-placeholder-shown:top-2 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-400'}`}
+                  ${email ? '-top-3 text-xs text-edx-light-blue font-medium bg-white' : 'top-2'}`}
               >
                 Email
               </label>
@@ -115,8 +133,8 @@ function Login() {
                 name="password"
                 type={showPassword ? "text" : "password"}
                 required
-                className="w-full h-[40px] px-3 border border-gray-300 rounded-xl text-[14px] focus:outline-none focus:border-2 focus:border-edx-light-blue transition-all duration-300 peer bg-transparent placeholder-transparent"
-                placeholder="Password"
+                className="w-full h-[40px] px-3 border border-gray-300 rounded-xl text-[14px] focus:outline-none focus:border-2 focus:border-edx-light-blue transition-all duration-300 peer bg-transparent"
+                placeholder=" "
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -124,9 +142,8 @@ function Login() {
                 htmlFor="password"
                 className={`absolute left-3 transition-all duration-200 pointer-events-none px-1
                   text-gray-400 text-[14px]
-                  top-2
                   peer-focus:-top-3 peer-focus:text-xs peer-focus:text-edx-light-blue peer-focus:font-medium peer-focus:bg-white
-                  ${password ? '-top-3 text-xs text-edx-light-blue font-medium bg-white' : 'peer-placeholder-shown:top-2 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-400'}`}
+                  ${password ? '-top-3 text-xs text-edx-light-blue font-medium bg-white' : 'top-2'}`}
               >
                 Password
               </label>

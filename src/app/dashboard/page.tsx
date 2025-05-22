@@ -29,25 +29,6 @@ export default function Dashboard() {
       return;
     }
 
-    // Check for Google Drive OAuth params in URL
-    if (typeof window !== 'undefined') {
-      const url = new URL(window.location.href);
-      const googleToken = url.searchParams.get('google_access_token');
-      const googleEmail = url.searchParams.get('google_email');
-      if (googleToken) {
-        localStorage.setItem('google_access_token', googleToken);
-      }
-      if (googleEmail) {
-        localStorage.setItem('google_email', googleEmail);
-      }
-      if (googleToken || googleEmail) {
-        setActiveSection('elibrary');
-        url.searchParams.delete('google_access_token');
-        url.searchParams.delete('google_email');
-        window.history.replaceState({}, document.title, url.pathname + url.search);
-      }
-    }
-
     const checkUser = async () => {
       try {
         // Skip authentication if we're using dummy credentials
@@ -56,9 +37,25 @@ export default function Dashboard() {
           return;
         }
 
-        const { data: { user }, error } = await supabase.auth.getUser();
-        if (error) {
-          console.error('Error getting user:', error);
+        // Get the current session
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError) {
+          console.error('Error getting session:', sessionError);
+          router.push('/login');
+          return;
+        }
+
+        if (!session) {
+          router.push('/login');
+          return;
+        }
+
+        // Get the user from the session
+        const { data: { user }, error: userError } = await supabase.auth.getUser(session.access_token);
+        
+        if (userError) {
+          console.error('Error getting user:', userError);
           router.push('/login');
           return;
         }
@@ -69,8 +66,21 @@ export default function Dashboard() {
         }
 
         setUser(user);
-        const { data: sessionData } = await supabase.auth.getSession();
-        setToken(sessionData?.session?.access_token || "");
+        setToken(session.access_token);
+
+        // Set up auth state change listener
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+          if (event === 'SIGNED_OUT') {
+            router.push('/login');
+          } else if (session) {
+            setUser(session.user);
+            setToken(session.access_token);
+          }
+        });
+
+        return () => {
+          subscription.unsubscribe();
+        };
       } catch (error) {
         console.error('Error checking user:', error);
         router.push('/login');
@@ -269,8 +279,8 @@ export default function Dashboard() {
                     <div className="absolute inset-0 rounded-2xl pointer-events-none" style={{boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)'}}></div>
                     <FiClock className="w-10 h-10 text-white mb-2 drop-shadow-lg animate-pulse z-10" />
                     <div className="text-lg font-bold text-white mb-2 tracking-wide drop-shadow z-10 break-words whitespace-normal">Exam Countdown</div>
-                    <div className="text-base font-medium text-white/80 mb-2 z-10 break-words whitespace-normal">You have <span className="font-bold text-white">{countdown.days}</span> day{countdown.days !== 1 ? 's' : ''} left until your exam, make the most of the time you still have.</div>
-                    <div className="text-3xl sm:text-4xl font-extrabold text-white tracking-widest font-mono flex gap-2 animate-timer z-10 break-words whitespace-normal">
+                    <div className="text-sm sm:text-base font-medium text-white/80 mb-2 z-10 break-words whitespace-normal">You have <span className="font-bold text-white">{countdown.days}</span> day{countdown.days !== 1 ? 's' : ''} left until your exam, make the most of the time you still have.</div>
+                    <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-white tracking-widest font-mono flex gap-1 sm:gap-2 animate-timer z-10 break-words whitespace-normal">
                       <span className="transition-all duration-200">{String(countdown.days).padStart(2, '0')}</span><span className="opacity-70">d</span> :
                       <span className="transition-all duration-200">{String(countdown.hours).padStart(2, '0')}</span><span className="opacity-70">h</span> :
                       <span className="transition-all duration-200">{String(countdown.minutes).padStart(2, '0')}</span><span className="opacity-70">m</span> :

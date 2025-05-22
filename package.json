@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "clean": "rm -r -force .next && rm -r -force node_modules/.cache"
   },
   "dependencies": {
     "@netlify/next": "^1.4.9",

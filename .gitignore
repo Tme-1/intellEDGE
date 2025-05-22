@@ -70,3 +70,6 @@ next-env.d.ts
 
 # Cache
 .cache/
+
+# Next
+.next

@@ -62,6 +62,7 @@ export default function SignUp() {
             full_name: fullName,
             username: username,
           },
+          emailRedirectTo: `${window.location.origin}/login`,
         },
       })
 
@@ -129,8 +130,8 @@ export default function SignUp() {
                 name="fullName"
                 type="text"
                 required
-                className="w-full h-[40px] px-3 border border-gray-300 rounded-xl text-[14px] focus:outline-none focus:border-2 focus:border-edx-light-blue transition-all duration-300 peer bg-transparent placeholder-transparent"
-                placeholder="Full Name"
+                className="w-full h-[40px] px-3 border border-gray-300 rounded-xl text-[14px] focus:outline-none focus:border-2 focus:border-edx-light-blue transition-all duration-300 peer bg-transparent"
+                placeholder=" "
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
               />
@@ -138,9 +139,8 @@ export default function SignUp() {
                 htmlFor="fullName"
                 className={`absolute left-3 transition-all duration-200 pointer-events-none px-1
                   text-gray-400 text-[14px]
-                  top-2
                   peer-focus:-top-3 peer-focus:text-xs peer-focus:text-edx-light-blue peer-focus:font-medium peer-focus:bg-white
-                  ${fullName ? '-top-3 text-xs text-edx-light-blue font-medium bg-white' : 'peer-placeholder-shown:top-2 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-400'}`}
+                  ${fullName ? '-top-3 text-xs text-edx-light-blue font-medium bg-white' : 'top-2'}`}
               >
                 Full Name
               </label>
@@ -151,8 +151,8 @@ export default function SignUp() {
                 name="username"
                 type="text"
                 required
-                className="w-full h-[40px] px-3 border border-gray-300 rounded-xl text-[14px] focus:outline-none focus:border-2 focus:border-edx-light-blue transition-all duration-300 peer bg-transparent placeholder-transparent"
-                placeholder="Choose a public username"
+                className="w-full h-[40px] px-3 border border-gray-300 rounded-xl text-[14px] focus:outline-none focus:border-2 focus:border-edx-light-blue transition-all duration-300 peer bg-transparent"
+                placeholder=" "
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
@@ -160,9 +160,8 @@ export default function SignUp() {
                 htmlFor="username"
                 className={`absolute left-3 transition-all duration-200 pointer-events-none px-1
                   text-gray-400 text-[14px]
-                  top-2
                   peer-focus:-top-3 peer-focus:text-xs peer-focus:text-edx-light-blue peer-focus:font-medium peer-focus:bg-white
-                  ${username ? '-top-3 text-xs text-edx-light-blue font-medium bg-white' : 'peer-placeholder-shown:top-2 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-400'}`}
+                  ${username ? '-top-3 text-xs text-edx-light-blue font-medium bg-white' : 'top-2'}`}
               >
                 Public Username
               </label>
@@ -173,8 +172,8 @@ export default function SignUp() {
                 name="email"
                 type="email"
                 required
-                className="w-full h-[40px] px-3 border border-gray-300 rounded-xl text-[14px] focus:outline-none focus:border-2 focus:border-edx-light-blue transition-all duration-300 peer bg-transparent placeholder-transparent"
-                placeholder="Enter your email"
+                className="w-full h-[40px] px-3 border border-gray-300 rounded-xl text-[14px] focus:outline-none focus:border-2 focus:border-edx-light-blue transition-all duration-300 peer bg-transparent"
+                placeholder=" "
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -182,9 +181,8 @@ export default function SignUp() {
                 htmlFor="email"
                 className={`absolute left-3 transition-all duration-200 pointer-events-none px-1
                   text-gray-400 text-[14px]
-                  top-2
                   peer-focus:-top-3 peer-focus:text-xs peer-focus:text-edx-light-blue peer-focus:font-medium peer-focus:bg-white
-                  ${email ? '-top-3 text-xs text-edx-light-blue font-medium bg-white' : 'peer-placeholder-shown:top-2 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-400'}`}
+                  ${email ? '-top-3 text-xs text-edx-light-blue font-medium bg-white' : 'top-2'}`}
               >
                 Email
               </label>
@@ -196,8 +194,8 @@ export default function SignUp() {
                 name="password"
                 type={showPassword ? "text" : "password"}
                 required
-                className="w-full h-[40px] px-3 border border-gray-300 rounded-xl text-[14px] focus:outline-none focus:border-2 focus:border-edx-light-blue transition-all duration-300 peer bg-transparent placeholder-transparent"
-                placeholder="Enter your password"
+                className="w-full h-[40px] px-3 border border-gray-300 rounded-xl text-[14px] focus:outline-none focus:border-2 focus:border-edx-light-blue transition-all duration-300 peer bg-transparent"
+                placeholder=" "
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -205,9 +203,8 @@ export default function SignUp() {
                 htmlFor="password"
                 className={`absolute left-3 transition-all duration-200 pointer-events-none px-1
                   text-gray-400 text-[14px]
-                  top-2
                   peer-focus:-top-3 peer-focus:text-xs peer-focus:text-edx-light-blue peer-focus:font-medium peer-focus:bg-white
-                  ${password ? '-top-3 text-xs text-edx-light-blue font-medium bg-white' : 'peer-placeholder-shown:top-2 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-400'}`}
+                  ${password ? '-top-3 text-xs text-edx-light-blue font-medium bg-white' : 'top-2'}`}
               >
                 Password
               </label>
@@ -219,7 +216,7 @@ export default function SignUp() {
                 {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
               </button>
             </div>
-            <p className="mt-1 text-[12px] text-gray-500">
+              <p className="mt-1 text-[12px] text-gray-500">
               Password must be at least 8 characters long and include both letters and numbers
             </p>
             <div className="relative mb-4">
@@ -228,8 +225,8 @@ export default function SignUp() {
                 name="confirmPassword"
                 type={showConfirmPassword ? "text" : "password"}
                 required
-                className="w-full h-[40px] px-3 border border-gray-300 rounded-xl text-[14px] focus:outline-none focus:border-2 focus:border-edx-light-blue transition-all duration-300 peer bg-transparent placeholder-transparent"
-                placeholder="Confirm your password"
+                className="w-full h-[40px] px-3 border border-gray-300 rounded-xl text-[14px] focus:outline-none focus:border-2 focus:border-edx-light-blue transition-all duration-300 peer bg-transparent"
+                placeholder=" "
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
@@ -237,9 +234,8 @@ export default function SignUp() {
                 htmlFor="confirmPassword"
                 className={`absolute left-3 transition-all duration-200 pointer-events-none px-1
                   text-gray-400 text-[14px]
-                  top-2
                   peer-focus:-top-3 peer-focus:text-xs peer-focus:text-edx-light-blue peer-focus:font-medium peer-focus:bg-white
-                  ${confirmPassword ? '-top-3 text-xs text-edx-light-blue font-medium bg-white' : 'peer-placeholder-shown:top-2 peer-placeholder-shown:text-[14px] peer-placeholder-shown:text-gray-400'}`}
+                  ${confirmPassword ? '-top-3 text-xs text-edx-light-blue font-medium bg-white' : 'top-2'}`}
               >
                 Confirm Password
               </label>
