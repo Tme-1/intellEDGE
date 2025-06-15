@@ -201,7 +201,7 @@ export default function ELibrary({ token }: ELibraryProps) {
   const handleGoogleSignIn = () => {
     const params = new URLSearchParams({
       client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-      redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI || 'http://localhost:3000/api/auth/callback',
+      redirect_uri: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback`,
       response_type: 'code',
       scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email',
       access_type: 'offline',
