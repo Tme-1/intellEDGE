@@ -202,9 +202,12 @@ export default function ELibrary({ token }: ELibraryProps) {
     const redirectUri = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback`;
     const clientId = process.env.NEXT_PUBLIC_GOOGLE_DRIVE_CLIENT_ID;
     
-    console.log('Environment variables:', {
+    // Detailed environment variable logging
+    console.log('OAuth Configuration:', {
       NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
-      NEXT_PUBLIC_GOOGLE_DRIVE_CLIENT_ID: clientId ? 'exists' : 'missing',
+      NEXT_PUBLIC_GOOGLE_DRIVE_CLIENT_ID: clientId,
+      redirectUri: redirectUri,
+      fullUrl: window.location.href,
     });
     
     if (!clientId) {
@@ -212,7 +215,10 @@ export default function ELibrary({ token }: ELibraryProps) {
       return;
     }
     
-    console.log('Using redirect URI:', redirectUri);
+    if (!process.env.NEXT_PUBLIC_APP_URL) {
+      console.error('NEXT_PUBLIC_APP_URL is missing!');
+      return;
+    }
     
     const params = new URLSearchParams({
       client_id: clientId,
@@ -224,7 +230,7 @@ export default function ELibrary({ token }: ELibraryProps) {
     });
     
     const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
-    console.log('Auth URL:', authUrl);
+    console.log('Complete OAuth URL:', authUrl);
     window.location.href = authUrl;
   };
 
