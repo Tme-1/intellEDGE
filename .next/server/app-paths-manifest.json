@@ -1,0 +1,11 @@
+{
+  "/api/profile/route": "app/api/profile/route.js",
+  "/api/materials/route": "app/api/materials/route.js",
+  "/api/activities/route": "app/api/activities/route.js",
+  "/api/cgpa/route": "app/api/cgpa/route.js",
+  "/page": "app/page.js",
+  "/signup/page": "app/signup/page.js",
+  "/login/page": "app/login/page.js",
+  "/forgot-password/page": "app/forgot-password/page.js",
+  "/dashboard/page": "app/dashboard/page.js"
+}
