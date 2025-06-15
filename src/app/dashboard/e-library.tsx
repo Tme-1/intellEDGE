@@ -199,15 +199,21 @@ export default function ELibrary({ token }: ELibraryProps) {
 
   // Start Google OAuth flow
   const handleGoogleSignIn = () => {
+    const redirectUri = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback`;
+    console.log('Using redirect URI:', redirectUri); // Debug log
+    
     const params = new URLSearchParams({
-      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-      redirect_uri: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback`,
+      client_id: process.env.NEXT_PUBLIC_GOOGLE_DRIVE_CLIENT_ID!,
+      redirect_uri: redirectUri,
       response_type: 'code',
       scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email',
       access_type: 'offline',
       prompt: 'consent',
     });
-    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
+    
+    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
+    console.log('Auth URL:', authUrl); // Debug log
+    window.location.href = authUrl;
   };
 
   // Sign out from Google Drive
