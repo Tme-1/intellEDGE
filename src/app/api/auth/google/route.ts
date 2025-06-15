@@ -21,7 +21,7 @@ export async function GET(request: Request) {
         code,
         client_id: process.env.NEXT_PUBLIC_GOOGLE_DRIVE_CLIENT_ID!,
         client_secret: process.env.GOOGLE_DRIVE_CLIENT_SECRET!,
-        redirect_uri: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/e-library`,
+        redirect_uri: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback`,
         grant_type: 'authorization_code',
       }),
     });
