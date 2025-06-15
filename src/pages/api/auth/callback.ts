@@ -1,6 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  console.log('Callback received with request:', {
+    url: req.url,
+    method: req.method,
+    query: req.query,
+  });
+
   const code = req.query.code as string;
   if (!code) {
     console.error('No code provided in callback');
@@ -8,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   const redirectUri = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback`;
-  console.log('Callback received with redirect URI:', redirectUri);
+  console.log('Callback handler using redirect URI:', redirectUri);
 
   const params = new URLSearchParams({
     code,
@@ -18,7 +24,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     grant_type: "authorization_code",
   });
 
-  console.log('Exchanging code for token...');
+  console.log('Token exchange parameters:', {
+    redirect_uri: redirectUri,
+    client_id: process.env.NEXT_PUBLIC_GOOGLE_DRIVE_CLIENT_ID ? 'exists' : 'missing',
+    client_secret: process.env.GOOGLE_DRIVE_CLIENT_SECRET ? 'exists' : 'missing',
+  });
+
   // Exchange code for tokens
   const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
     method: "POST",

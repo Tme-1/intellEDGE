@@ -199,6 +199,14 @@ export default function ELibrary({ token }: ELibraryProps) {
 
   // Start Google OAuth flow
   const handleGoogleSignIn = () => {
+    // Log the current environment
+    console.log('Current environment:', {
+      isDevelopment: process.env.NODE_ENV === 'development',
+      isProduction: process.env.NODE_ENV === 'production',
+      windowLocation: window.location.href,
+      windowOrigin: window.location.origin,
+    });
+
     const redirectUri = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback`;
     const clientId = process.env.NEXT_PUBLIC_GOOGLE_DRIVE_CLIENT_ID;
     
@@ -219,6 +227,9 @@ export default function ELibrary({ token }: ELibraryProps) {
       console.error('NEXT_PUBLIC_APP_URL is missing!');
       return;
     }
+
+    // Log the exact redirect URI that will be sent to Google
+    console.log('Redirect URI being sent to Google:', redirectUri);
     
     const params = new URLSearchParams({
       client_id: clientId,
