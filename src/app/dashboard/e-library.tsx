@@ -200,10 +200,22 @@ export default function ELibrary({ token }: ELibraryProps) {
   // Start Google OAuth flow
   const handleGoogleSignIn = () => {
     const redirectUri = `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback`;
-    console.log('Using redirect URI:', redirectUri); // Debug log
+    const clientId = process.env.NEXT_PUBLIC_GOOGLE_DRIVE_CLIENT_ID;
+    
+    console.log('Environment variables:', {
+      NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+      NEXT_PUBLIC_GOOGLE_DRIVE_CLIENT_ID: clientId ? 'exists' : 'missing',
+    });
+    
+    if (!clientId) {
+      console.error('Google Drive Client ID is missing!');
+      return;
+    }
+    
+    console.log('Using redirect URI:', redirectUri);
     
     const params = new URLSearchParams({
-      client_id: process.env.NEXT_PUBLIC_GOOGLE_DRIVE_CLIENT_ID!,
+      client_id: clientId,
       redirect_uri: redirectUri,
       response_type: 'code',
       scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/userinfo.email',
@@ -212,7 +224,7 @@ export default function ELibrary({ token }: ELibraryProps) {
     });
     
     const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
-    console.log('Auth URL:', authUrl); // Debug log
+    console.log('Auth URL:', authUrl);
     window.location.href = authUrl;
   };
 
