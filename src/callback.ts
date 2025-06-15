@@ -6,9 +6,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const params = new URLSearchParams({
     code,
-    client_id: process.env.GOOGLE_CLIENT_ID!,
-    client_secret: process.env.GOOGLE_CLIENT_SECRET!,
-    redirect_uri: process.env.GOOGLE_REDIRECT_URI || "http://localhost:3000/api/auth/callback",
+    client_id: process.env.NEXT_PUBLIC_GOOGLE_DRIVE_CLIENT_ID!,
+    client_secret: process.env.GOOGLE_DRIVE_CLIENT_SECRET!,
+    redirect_uri: `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback`,
     grant_type: "authorization_code",
   });
 
@@ -30,6 +30,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const user = await userRes.json();
 
   // Redirect to dashboard with token and email in query (for client-side storage)
-  const redirectUrl = `/dashboard/e-library?google_access_token=${tokens.access_token}&google_email=${encodeURIComponent(user.email)}`;
+  const redirectUrl = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/e-library?google_access_token=${tokens.access_token}&google_email=${encodeURIComponent(user.email)}`;
   res.redirect(redirectUrl);
 } 
